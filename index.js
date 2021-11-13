@@ -12,7 +12,7 @@ app.use('/api/auth', authroutes )
 
 async function start(){
     try{
-        await mongoose.connect('mongodb+srv://telematica:<telematica>@cluster0.twlws.mongodb.net/todo?retryWrites=true&w=majority',{
+        await mongoose.connect('mongodb+srv://telematica:telematica@cluster0.twlws.mongodb.net/todo?retryWrites=true&w=majority',{
             //to delete warnings:
             useNewUrlParser = true,
             useUnifiedTopology = true,
