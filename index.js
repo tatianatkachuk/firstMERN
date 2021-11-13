@@ -7,6 +7,7 @@ const authroutes = require('./routes/auth.routes')
 const app = express()
 const PORT = process.env.PORT || 5000
 
+
 app.use(express.json({extended: true}))
 app.use('/api/auth', authroutes )
 
@@ -25,3 +26,4 @@ async function start(){
         })
     }catch(err){console.error(err)}
 }
+start()
