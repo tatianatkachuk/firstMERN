@@ -14,10 +14,10 @@ async function start(){
     try{
         await mongoose.connect('mongodb+srv://telematica:telematica@cluster0.twlws.mongodb.net/todo?retryWrites=true&w=majority',{
             //to delete warnings:
-            useNewUrlParser = true,
+            /*useNewUrlParser = true,
             useUnifiedTopology = true,
             useCreateIndex = true,
-            useFindAndModigy = true
+            useFindAndModigy = true*/
         })
 
         app.listen(PORT, ()=>{
