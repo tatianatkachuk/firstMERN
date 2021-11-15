@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import './AuthPage.scss'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import axios from 'axios'
+import {AuthContext} from '../../context/AuthContext'
 
 export default function AuthPage() {
     const [form, setForm] = useState({
         email: '',
         password: ''
     })
+
+    const {login} = useContext(AuthContext)
 
     const changeHandler = (event) => {
         setForm({
@@ -36,7 +39,10 @@ export default function AuthPage() {
                     'Content-Type': 'application/json'
                 }
             })
-                .then(response => console.log(response))
+                .then(response => {
+                    login(response.data.token, response.data.userId)
+                })
+
         } catch (error) {
             console.log(error)
         }
