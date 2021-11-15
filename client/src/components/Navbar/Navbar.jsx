@@ -10,7 +10,7 @@ export default function Navbar() {
             <div className="nav-wrapper navbar blue">
                 <a href="/" className="brand-logo">MERN Todo App</a>
                 {
-                    isLogin
+                    !isLogin
                     ?   <ul id="nav-mobile" className="right hide-on-med-and-down">
                             <li><a href="/" onClick={logout}>Exit</a></li>
                         </ul>

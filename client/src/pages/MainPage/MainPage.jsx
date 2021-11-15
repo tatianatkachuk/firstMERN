@@ -38,12 +38,53 @@ const MainPage = () => {
                 .then((response) => {
                     setText('')
                     setTodos([...todos], response.data)
+                    
                     getTodo()
                 })
         } catch (error) {
-            console.log(error)
+            console.log(error, todos)
         }
     }, [text, userId, todos, setTodos, getTodo])
+
+    const removeTodo = useCallback( async (id) => {
+        try {
+            await axios.delete(`/api/todo/delete/${id}`, {id}, {
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(() => getTodo())
+        } catch (error) {
+            console.log(error)
+        }
+    }, [getTodo])
+
+    const completedTodo = useCallback(async (id) => {
+        try {
+            await axios.put(`/api/todo/complete/${id}`, {id}, {
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => {
+                setTodos([...todos], response.data)
+                getTodo()
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }, [getTodo, todos, setTodos])
+
+    const importantTodo = useCallback(async (id) => {
+        try {
+            await axios.put(`/api/todo/important/${id}`, {id}, {
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => {
+                setTodos([...todos], response.data)
+                getTodo()
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }, [getTodo, todos, setTodos])
+
 
     return (
         <div className="container">
@@ -51,7 +92,7 @@ const MainPage = () => {
                 <h4>Add a task</h4>
 
                 <form
-                    className="fomr form-login"
+                    className="form form-login"
                     onSubmit={e => e.preventDefault()}>
 
                     <div className="row">
@@ -78,18 +119,28 @@ const MainPage = () => {
 
                 </form>
 
-                <h3>Tasks active</h3>
+                <h3>Active tasks</h3>
                 <div className="todos">
                     {
                         !!todos && todos.map((todo, index) => {
+                            let cls = ['row flex todos-item']
+                                if(todo.completed){
+                                    cls.push('completed')
+                                }
+                                if(todo.important){
+                                    cls.push('important')
+                                }
                             return (
-                                <div className="row flex todos-item" key={index}>
+                                <div className={cls.join('')} key={index}>
                                     <div className="col todos-num">{index+1}</div>
                                     <div className="col todos-text">{todo.text}</div>
                                     <div className="col todos-buttons">
-                                        <i className="material-icons blue-text">check</i>
-                                        <i className="material-icons orange-text">warning</i>
-                                        <i className="material-icons red-text">delete</i>
+                                        <i className="material-icons blue-text"
+                                        onClick={() =>completedTodo(todo._id)}>check</i>
+                                        <i className="material-icons orange-text"
+                                         onClick={() =>importantTodo(todo._id)}>warning</i>
+                                        <i className="material-icons red-text"
+                                        onClick={() =>removeTodo(todo._id)}>delete</i>
                                     </div>
                                 </div>
                             )
